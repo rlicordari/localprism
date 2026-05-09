@@ -50,34 +50,41 @@ export function LocalModelsDialog({
     qwenDeepLocal: config.qwenDeepLocal,
   });
 
-  const [coderStatus, setCoderStatus] = useState<ValidationStatus>({ state: "idle" });
-  const [chatStatus, setChatStatus] = useState<ValidationStatus>({ state: "idle" });
-  const [deepStatus, setDeepStatus] = useState<ValidationStatus>({ state: "idle" });
+  const [saveError, setSaveError] = useState<string | null>(null);
 
-  // Load config from disk when dialog opens and seed the local draft
-  useEffect(() => {
-    if (open) {
-      loadConfig().then(() => {
-        // config will be updated in the store; sync draft after load
-      });
-    }
-  }, [open, loadConfig]);
+  const [coderStatus, setCoderStatus] = useState<ValidationStatus>({
+    state: "idle",
+  });
+  const [chatStatus, setChatStatus] = useState<ValidationStatus>({
+    state: "idle",
+  });
+  const [deepStatus, setDeepStatus] = useState<ValidationStatus>({
+    state: "idle",
+  });
 
-  // Sync draft when config changes (after loadConfig resolves)
+  // Load config from disk when dialog opens, then seed draft from fresh store state
   useEffect(() => {
-    if (open) {
+    if (!open) return;
+
+    let cancelled = false;
+    // Reset validation status
+    setCoderStatus({ state: "idle" });
+    setChatStatus({ state: "idle" });
+    setDeepStatus({ state: "idle" });
+
+    loadConfig().then(() => {
+      if (cancelled) return;
+      const fresh = useLocalModelsStore.getState().config;
       setDraft({
-        ollamaBaseUrl: config.ollamaBaseUrl,
-        qwenCoderLocal: config.qwenCoderLocal,
-        qwenChatLocal: config.qwenChatLocal,
-        qwenDeepLocal: config.qwenDeepLocal,
+        ollamaBaseUrl: fresh.ollamaBaseUrl,
+        qwenCoderLocal: fresh.qwenCoderLocal,
+        qwenChatLocal: fresh.qwenChatLocal,
+        qwenDeepLocal: fresh.qwenDeepLocal,
       });
-      // Reset validation statuses when dialog re-opens
-      setCoderStatus({ state: "idle" });
-      setChatStatus({ state: "idle" });
-      setDeepStatus({ state: "idle" });
-    }
-  }, [open, config]);
+    });
+
+    return () => { cancelled = true; };
+  }, [open, loadConfig]);
 
   const handleFieldChange = (field: keyof Draft, value: string) => {
     setDraft((prev) => ({ ...prev, [field]: value }));
@@ -99,8 +106,13 @@ export function LocalModelsDialog({
   };
 
   const handleSave = async () => {
-    await saveConfig(draft);
-    onOpenChange(false);
+    setSaveError(null);
+    try {
+      await saveConfig(draft);
+      onOpenChange(false);
+    } catch {
+      setSaveError("Failed to save. Please try again.");
+    }
   };
 
   const handleCancel = () => {
@@ -127,7 +139,9 @@ export function LocalModelsDialog({
             <Input
               id="ollama-url"
               value={draft.ollamaBaseUrl}
-              onChange={(e) => handleFieldChange("ollamaBaseUrl", e.target.value)}
+              onChange={(e) =>
+                handleFieldChange("ollamaBaseUrl", e.target.value)
+              }
               placeholder="http://localhost:11434"
             />
           </div>
@@ -163,12 +177,18 @@ export function LocalModelsDialog({
           />
         </div>
 
+        {saveError && (
+          <p className="text-sm text-destructive">{saveError}</p>
+        )}
+
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>
             Cancel
           </Button>
           <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving && <Loader2Icon className="mr-1.5 size-3.5 animate-spin" />}
+            {isSaving && (
+              <Loader2Icon className="mr-1.5 size-3.5 animate-spin" />
+            )}
             Save
           </Button>
         </DialogFooter>
@@ -186,7 +206,14 @@ interface ModelRowProps {
   onTest: () => void;
 }
 
-function ModelRow({ id, label, value, status, onChange, onTest }: ModelRowProps) {
+function ModelRow({
+  id,
+  label,
+  value,
+  status,
+  onChange,
+  onTest,
+}: ModelRowProps) {
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id}>{label}</Label>
