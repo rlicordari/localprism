@@ -51,7 +51,7 @@ export const useLocalModelsStore = create<LocalModelsState>()(
         set({ isLoading: true });
         try {
           const config = await invoke<LocalModelsConfig>(
-            "get_local_models_config"
+            "get_local_models_config",
           );
           set({ config, isLoading: false });
         } catch (err: any) {
@@ -74,12 +74,12 @@ export const useLocalModelsStore = create<LocalModelsState>()(
 
       validateModel: async (
         baseUrl: string,
-        model: string
+        model: string,
       ): Promise<OllamaValidation> => {
         try {
           const result = await invoke<OllamaValidation>(
             "validate_ollama_model",
-            { baseUrl, model }
+            { baseUrl, model },
           );
           return result;
         } catch (err: any) {
@@ -95,6 +95,7 @@ export const useLocalModelsStore = create<LocalModelsState>()(
     }),
     {
       name: "localprism-local-models",
-    }
-  )
+      partialize: (state) => ({ config: state.config }),
+    },
+  ),
 );
