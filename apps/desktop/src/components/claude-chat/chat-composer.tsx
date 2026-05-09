@@ -723,7 +723,7 @@ export const ChatComposer: FC<{ isOpen?: boolean }> = ({ isOpen }) => {
                   icon: <LayersIcon className="size-3.5" />,
                 },
                 {
-		  id: "qwen-coder-local" as const,
+                  id: "qwen-coder-local" as const,
                   name: "Qwen Coder (local)",
                   desc: "Agentic coding, MCP, runs on your Mac",
                   icon: <CpuIcon className="size-3.5" />,
@@ -803,7 +803,7 @@ export const ChatComposer: FC<{ isOpen?: boolean }> = ({ isOpen }) => {
 
             <div className="p-1">
               <button
-                className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-muted-foreground text-sm transition-colors hover:bg-muted hover:text-foreground"
                 onClick={() => {
                   setModelPickerOpen(false);
                   setLocalModelsDialogOpen(true);
