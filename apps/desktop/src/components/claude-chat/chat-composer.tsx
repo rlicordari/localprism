@@ -24,6 +24,8 @@ import {
   SparklesIcon,
   RabbitIcon,
   LayersIcon,
+  CpuIcon,
+  SettingsIcon,
 } from "lucide-react";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { writeFile, mkdir, exists } from "@tauri-apps/plugin-fs";
@@ -39,6 +41,7 @@ import { TooltipIconButton } from "@/components/assistant-ui/tooltip-icon-button
 import { cn } from "@/lib/utils";
 import { SlashCommandPicker, type SlashCommand } from "./slash-command-picker";
 import { createLogger } from "@/lib/debug/logger";
+import { LocalModelsDialog } from "@/components/settings/local-models-dialog";
 
 const log = createLogger("chat-composer");
 
@@ -80,6 +83,7 @@ export const ChatComposer: FC<{ isOpen?: boolean }> = ({ isOpen }) => {
 
   // Model picker state
   const [modelPickerOpen, setModelPickerOpen] = useState(false);
+  const [localModelsDialogOpen, setLocalModelsDialogOpen] = useState(false);
   const modelPickerRef = useRef<HTMLDivElement>(null);
   const modelButtonRef = useRef<HTMLButtonElement>(null);
   const [pickerPos, setPickerPos] = useState<{ left: number; bottom: number }>({
@@ -718,6 +722,24 @@ export const ChatComposer: FC<{ isOpen?: boolean }> = ({ isOpen }) => {
                   desc: "Opus for planning, Sonnet for execution",
                   icon: <LayersIcon className="size-3.5" />,
                 },
+                {
+		  id: "qwen-coder-local" as const,
+                  name: "Qwen Coder (local)",
+                  desc: "Agentic coding, MCP, runs on your Mac",
+                  icon: <CpuIcon className="size-3.5" />,
+                },
+                {
+                  id: "qwen-chat-local" as const,
+                  name: "Qwen Chat (local)",
+                  desc: "Drafting, writing, translations — local",
+                  icon: <CpuIcon className="size-3.5" />,
+                },
+                {
+                  id: "qwen-deep-local" as const,
+                  name: "Qwen Deep (local)",
+                  desc: "Deeper reasoning, slower — local",
+                  icon: <CpuIcon className="size-3.5" />,
+                },
               ].map((m) => (
                 <button
                   key={m.id}
@@ -776,9 +798,29 @@ export const ChatComposer: FC<{ isOpen?: boolean }> = ({ isOpen }) => {
                 ))}
               </div>
             </div>
+
+            <div className="border-border border-t" />
+
+            <div className="p-1">
+              <button
+                className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={() => {
+                  setModelPickerOpen(false);
+                  setLocalModelsDialogOpen(true);
+                }}
+              >
+                <SettingsIcon className="size-3.5" />
+                <span className="text-xs">Configure local models…</span>
+              </button>
+            </div>
           </div>,
           document.body,
         )}
+
+      <LocalModelsDialog
+        open={localModelsDialogOpen}
+        onOpenChange={setLocalModelsDialogOpen}
+      />
 
       {/* @ mention dropdown */}
       {slashQuery === null &&
@@ -910,7 +952,13 @@ export const ChatComposer: FC<{ isOpen?: boolean }> = ({ isOpen }) => {
                     ? "Opus"
                     : selectedModel === "haiku"
                       ? "Haiku"
-                      : "OpusPlan"}
+                      : selectedModel === "opusplan"
+                        ? "OpusPlan"
+                        : selectedModel === "qwen-coder-local"
+                          ? "Qwen Coder ⚡"
+                          : selectedModel === "qwen-chat-local"
+                            ? "Qwen Chat ⚡"
+                            : "Qwen Deep ⚡"}
               </span>
               <span className="text-muted-foreground/60">
                 {effortLevel === "low"
