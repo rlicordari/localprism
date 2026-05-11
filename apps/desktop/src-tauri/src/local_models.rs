@@ -22,7 +22,7 @@ impl Default for LocalModelsConfig {
     fn default() -> Self {
         Self {
             ollama_base_url: "http://localhost:11434".to_string(),
-            qwen_coder_local: "qwen3.6:35b-a3b-coding-mxfp8".to_string(),
+            qwen_coder_local: "qwen3.6:35b-a3b".to_string(),
             qwen_chat_local: "qwen3.6:35b-a3b".to_string(),
             qwen_deep_local: "qwen3.6:27b".to_string(),
         }
