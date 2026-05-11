@@ -2,10 +2,15 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { Sidebar } from "./sidebar";
 import { LatexEditor } from "./editor/latex-editor";
 import { PdfPreview } from "./preview/pdf-preview";
+import { DocxPreview } from "./preview/docx-preview";
 import { useDocumentStore } from "@/stores/document-store";
 
 export function WorkspaceLayout() {
   const initialized = useDocumentStore((s) => s.initialized);
+  const activeFileType = useDocumentStore((s) => {
+    const f = s.files.find((f) => f.id === s.activeFileId);
+    return f?.type;
+  });
 
   if (!initialized) {
     return (
@@ -30,7 +35,7 @@ export function WorkspaceLayout() {
       <PanelResizeHandle className="w-px bg-border transition-colors hover:bg-ring" />
 
       <Panel defaultSize={42.5} minSize={25}>
-        <PdfPreview />
+        {activeFileType === "docx" ? <DocxPreview /> : <PdfPreview />}
       </Panel>
     </PanelGroup>
   );

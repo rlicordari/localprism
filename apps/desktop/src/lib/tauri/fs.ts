@@ -22,6 +22,7 @@ export type ProjectFileType =
   | "pdf"
   | "bib"
   | "style"
+  | "docx"
   | "other";
 
 export interface FsProjectFile {
@@ -85,7 +86,6 @@ const IGNORED_EXTENSIONS = new Set([
   ".hwp",
   ".hwpx",
   ".doc",
-  ".docx",
   ".xls",
   ".xlsx",
   ".xlsm",
@@ -142,6 +142,7 @@ export function getProjectFileType(name: string): ProjectFileType | null {
   if (lower.endsWith(".tex") || lower.endsWith(".ltx")) return "tex";
   if (lower.endsWith(".bib")) return "bib";
   if (lower.endsWith(".pdf")) return "pdf";
+  if (lower.endsWith(".docx")) return "docx";
   for (const ext of IMAGE_EXTENSIONS) {
     if (lower.endsWith(ext)) return "image";
   }

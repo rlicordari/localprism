@@ -16,6 +16,7 @@ import {
   LARGE_FILE_THRESHOLD,
   type ProjectFileType,
 } from "@/lib/tauri/fs";
+import { readDocxAsMarkdown, writeDocxFromMarkdown } from "@/lib/docx-utils";
 import { useHistoryStore } from "@/stores/history-store";
 import { useClaudeChatStore } from "@/stores/claude-chat-store";
 import { clearDocCache } from "@/lib/mupdf/pdf-doc-cache";
@@ -300,6 +301,14 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
           }
         }
         // Large "other" files: content stays undefined, loaded on-demand via loadFileContent
+      }
+
+      if (f.type === "docx") {
+        try {
+          pf.content = await readDocxAsMarkdown(f.absolutePath);
+        } catch {
+          pf.content = "";
+        }
       }
 
       // Load dataUrl for image files (skip very large images)
@@ -701,7 +710,11 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
     const file = state.files.find((f) => f.id === id);
     if (!file || !file.isDirty || file.content == null) return;
 
-    await writeTexFileContent(file.absolutePath, file.content);
+    if (file.type === "docx") {
+      await writeDocxFromMarkdown(file.content, file.absolutePath);
+    } else {
+      await writeTexFileContent(file.absolutePath, file.content);
+    }
     set((s) => ({
       files: s.files.map((f) => (f.id === id ? { ...f, isDirty: false } : f)),
     }));
@@ -713,7 +726,11 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
       (f) => f.isDirty && f.content != null,
     );
     const results = await Promise.allSettled(
-      dirtyFiles.map((f) => writeTexFileContent(f.absolutePath, f.content!)),
+      dirtyFiles.map((f) =>
+        f.type === "docx"
+          ? writeDocxFromMarkdown(f.content!, f.absolutePath)
+          : writeTexFileContent(f.absolutePath, f.content!),
+      ),
     );
     // Only mark successfully saved files as clean
     const savedIds = new Set<string>();
@@ -939,6 +956,13 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
               }
             }
           }
+          if (updated.type === "docx") {
+            try {
+              updated.content = await readDocxAsMarkdown(updated.absolutePath);
+            } catch {
+              /* keep previous content */
+            }
+          }
           merged.push(updated);
         }
       } else {
@@ -962,6 +986,12 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
         ) {
           try {
             pf.content = await readTexFileContent(pf.absolutePath);
+          } catch {
+            /* skip unreadable */
+          }
+        } else if (pf.type === "docx") {
+          try {
+            pf.content = await readDocxAsMarkdown(pf.absolutePath);
           } catch {
             /* skip unreadable */
           }

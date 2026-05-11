@@ -76,9 +76,22 @@ Fork of ClaudePrism (delibae/claude-prism) with local Ollama models support.
    - Add "⚙ Configure local models…" entry at the bottom of the dropdown
    - Wire up dialog open/close state
 
+### DOCX native editing — DONE
+
+- `apps/desktop/src/lib/docx-utils.ts` — mammoth (docx→HTML→markdown) + docx npm pkg (markdown→.docx)
+- `ProjectFileType` extended with `"docx"`; `.docx` removed from IGNORED_EXTENSIONS in fs.ts
+- `document-store.ts` — openProject / saveFile / saveAllFiles / refreshFiles all handle docx
+- `latex-editor.tsx` — isDocx flag: markdown() lang mode, Mod-B/I write `**bold**`/`*italic*`
+- `editor-toolbar.tsx` — "docx" fileType branch: markdown buttons (bold, italic, heading, list)
+- `docx-preview.tsx` — react-markdown preview pane for .docx files
+- `workspace-layout.tsx` — shows DocxPreview instead of PdfPreview for .docx files
+- `sidebar.tsx` — blue FileTextIcon for .docx, "Import DOCX" entry in "+" dropdown
+
+**DOCX round-trip note:** save regenerates the .docx from markdown via `docx` npm pkg.
+Complex Word styles, images, and headers/footers are standardised (not preserved verbatim).
+
 ### Future / nice-to-have
-- DOCX read support (mammoth.js or similar)
-- DOCX write/export (Pandoc embedded or pure JS)
+- Improve DOCX fidelity (jszip XML round-trip or bundled pandoc)
 - Rebrand: app name, icon, copyright (claude-prism → localprism in package.json, tauri.conf.json, etc.)
 - Templates for IMRAD scientific articles
 

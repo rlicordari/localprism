@@ -52,7 +52,7 @@ const ZOOM_OPTIONS = [
 
 interface EditorToolbarProps {
   editorView: RefObject<EditorView | null>;
-  fileType?: "tex" | "image";
+  fileType?: "tex" | "image" | "docx";
   imageScale?: number;
   onImageScaleChange?: (scale: number) => void;
   cropMode?: boolean;
@@ -129,6 +129,80 @@ export function EditorToolbar({
 
   const zoomIn = () => onImageScaleChange?.(Math.min(4, imageScale + 0.25));
   const zoomOut = () => onImageScaleChange?.(Math.max(0.25, imageScale - 0.25));
+
+  if (fileType === "docx") {
+    return (
+      <div className="flex h-[calc(36px+var(--titlebar-height))] items-center gap-1 border-border border-b bg-muted/30 px-2 pt-[var(--titlebar-height)]">
+        <FileTextIcon className="size-4 text-blue-500" />
+        <span className="mr-2 font-medium text-muted-foreground text-sm">
+          {fileName}
+        </span>
+        <div className="mx-2 h-4 w-px bg-border" />
+        <TooltipIconButton
+          tooltip="Bold (⌘B)"
+          onClick={() => insertText("**", "**")}
+        >
+          <BoldIcon className="size-4" />
+        </TooltipIconButton>
+        <TooltipIconButton
+          tooltip="Italic (⌘I)"
+          onClick={() => insertText("*", "*")}
+        >
+          <ItalicIcon className="size-4" />
+        </TooltipIconButton>
+        <TooltipIconButton
+          tooltip="Code"
+          onClick={() => insertText("`", "`")}
+        >
+          <CodeIcon className="size-4" />
+        </TooltipIconButton>
+        <div className="mx-2 h-4 w-px bg-border" />
+        <TooltipIconButton
+          tooltip="Heading 1"
+          onClick={() => insertText("# ")}
+        >
+          <Heading1Icon className="size-4" />
+        </TooltipIconButton>
+        <TooltipIconButton
+          tooltip="Heading 2"
+          onClick={() => insertText("## ")}
+        >
+          <Heading2Icon className="size-4" />
+        </TooltipIconButton>
+        <TooltipIconButton
+          tooltip="List item"
+          onClick={() => insertText("- ")}
+        >
+          <ListIcon className="size-4" />
+        </TooltipIconButton>
+        <div data-tauri-drag-region className="flex-1 self-stretch" />
+        {editors.length === 1 && (
+          <TooltipIconButton
+            tooltip={`Open in ${editors[0].name}`}
+            onClick={() => openInEditor(editors[0].id)}
+          >
+            <ExternalLinkIcon className="size-4" />
+          </TooltipIconButton>
+        )}
+        {editors.length > 1 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="size-6 p-1" title="Open in Editor">
+                <ExternalLinkIcon className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {editors.map((editor) => (
+                <DropdownMenuItem key={editor.id} onClick={() => openInEditor(editor.id)}>
+                  {editor.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+    );
+  }
 
   if (fileType === "image") {
     return (

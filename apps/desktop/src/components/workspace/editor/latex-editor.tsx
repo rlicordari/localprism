@@ -35,6 +35,7 @@ import {
   rejectChunk,
 } from "@codemirror/merge";
 import { latex, latexLinter } from "codemirror-lang-latex";
+import { markdown } from "@codemirror/lang-markdown";
 import { bibtex } from "./lang-bibtex";
 import {
   linter,
@@ -124,7 +125,9 @@ export function LatexEditor() {
     activeFile?.type === "tex" ||
     activeFile?.type === "bib" ||
     activeFile?.type === "style" ||
-    activeFile?.type === "other";
+    activeFile?.type === "other" ||
+    activeFile?.type === "docx";
+  const isDocx = activeFile?.type === "docx";
   const activeFileContent = activeFile?.content;
   const isLargeFileNotLoaded =
     isTextFile && activeFileContent === undefined && !!activeFile;
@@ -600,11 +603,33 @@ export function LatexEditor() {
         },
         {
           key: "Mod-b",
-          run: (view) => wrapSelection(view, "textbf"),
+          run: (view) => {
+            if (isDocx) {
+              const { from, to } = view.state.selection.main;
+              const selected = view.state.sliceDoc(from, to);
+              view.dispatch({
+                changes: { from, to, insert: `**${selected}**` },
+                selection: { anchor: from + 2 + selected.length },
+              });
+              return true;
+            }
+            return wrapSelection(view, "textbf");
+          },
         },
         {
           key: "Mod-i",
-          run: (view) => wrapSelection(view, "textit"),
+          run: (view) => {
+            if (isDocx) {
+              const { from, to } = view.state.selection.main;
+              const selected = view.state.sliceDoc(from, to);
+              view.dispatch({
+                changes: { from, to, insert: `*${selected}*` },
+                selection: { anchor: from + 1 + selected.length },
+              });
+              return true;
+            }
+            return wrapSelection(view, "textit");
+          },
         },
         {
           key: "Mod-/",
@@ -626,7 +651,11 @@ export function LatexEditor() {
           ...defaultKeymap,
           ...historyKeymap,
         ]),
-        activeFile?.type === "bib" ? bibtex() : latex({ enableLinting: false }),
+        isDocx
+          ? markdown()
+          : activeFile?.type === "bib"
+            ? bibtex()
+            : latex({ enableLinting: false }),
         ...(activeFile?.type === "tex"
           ? [
               linter((view) => {
@@ -1046,7 +1075,7 @@ export function LatexEditor() {
       {/* Toolbar — adapts to file type */}
       <EditorToolbar
         editorView={viewRef}
-        fileType={isPdf || isImage ? "image" : undefined}
+        fileType={isPdf || isImage ? "image" : isDocx ? "docx" : undefined}
         imageScale={isPdf || isImage ? imageScale : undefined}
         onImageScaleChange={isPdf || isImage ? setImageScale : undefined}
         cropMode={isImage ? cropMode : undefined}

@@ -184,6 +184,8 @@ function getFileIcon(file: ProjectFile) {
   if (file.type === "image") return <ImageIcon className="size-4 shrink-0" />;
   if (file.type === "pdf")
     return <FileSpreadsheetIcon className="size-4 shrink-0" />;
+  if (file.type === "docx")
+    return <FileTextIcon className="size-4 shrink-0 text-blue-500" />;
   if (file.type === "style")
     return <FileCodeIcon className="size-4 shrink-0" />;
   if (file.type === "other") return <FileIcon className="size-4 shrink-0" />;
@@ -563,9 +565,21 @@ export function Sidebar() {
             "pdf",
             "txt",
             "md",
+            "docx",
           ],
         },
       ],
+    });
+    if (selected && projectRoot) {
+      const paths = Array.isArray(selected) ? selected : [selected];
+      await importFiles(paths, targetFolder);
+    }
+  };
+
+  const handleImportDocx = async (targetFolder?: string) => {
+    const selected = await openDialog({
+      multiple: true,
+      filters: [{ name: "Word Document", extensions: ["docx"] }],
     });
     if (selected && projectRoot) {
       const paths = Array.isArray(selected) ? selected : [selected];
@@ -689,6 +703,10 @@ export function Sidebar() {
                     <DropdownMenuItem onClick={() => handleImport()}>
                       <UploadIcon className="mr-2 size-4" />
                       Import File
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleImportDocx()}>
+                      <FileTextIcon className="mr-2 size-4 text-blue-500" />
+                      Import DOCX
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
