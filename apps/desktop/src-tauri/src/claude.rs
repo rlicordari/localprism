@@ -1529,8 +1529,7 @@ pub async fn execute_claude_code(
         create_command(&claude_path, args, &project_path, effort_level.as_deref());
     if let Some(url) = ollama_base_url {
         cmd.env("ANTHROPIC_BASE_URL", url);
-        cmd.env("ANTHROPIC_AUTH_TOKEN", "ollama");
-        cmd.env("ANTHROPIC_API_KEY", "");
+        cmd.env("ANTHROPIC_API_KEY", "ollama");
     }
     spawn_claude_process(window, cmd, tab_id, stdin_payload).await
 }
@@ -1560,8 +1559,7 @@ pub async fn continue_claude_code(
         create_command(&claude_path, args, &project_path, effort_level.as_deref());
     if let Some(url) = ollama_base_url {
         cmd.env("ANTHROPIC_BASE_URL", url);
-        cmd.env("ANTHROPIC_AUTH_TOKEN", "ollama");
-        cmd.env("ANTHROPIC_API_KEY", "");
+        cmd.env("ANTHROPIC_API_KEY", "ollama");
     }
     spawn_claude_process(window, cmd, tab_id, stdin_payload).await
 }
@@ -1594,8 +1592,7 @@ pub async fn resume_claude_code(
         create_command(&claude_path, args, &project_path, effort_level.as_deref());
     if let Some(url) = ollama_base_url {
         cmd.env("ANTHROPIC_BASE_URL", url);
-        cmd.env("ANTHROPIC_AUTH_TOKEN", "ollama");
-        cmd.env("ANTHROPIC_API_KEY", "");
+        cmd.env("ANTHROPIC_API_KEY", "ollama");
     }
     spawn_claude_process(window, cmd, tab_id, stdin_payload).await
 }
