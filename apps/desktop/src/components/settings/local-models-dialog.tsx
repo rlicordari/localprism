@@ -83,7 +83,9 @@ export function LocalModelsDialog({
       });
     });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [open, loadConfig]);
 
   const handleFieldChange = (field: keyof Draft, value: string) => {
@@ -177,9 +179,7 @@ export function LocalModelsDialog({
           />
         </div>
 
-        {saveError && (
-          <p className="text-sm text-destructive">{saveError}</p>
-        )}
+        {saveError && <p className="text-destructive text-sm">{saveError}</p>}
 
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>

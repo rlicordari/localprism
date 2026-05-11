@@ -174,8 +174,24 @@ interface ClaudeChatState {
   }[];
 
   /** Currently selected model (passed per-prompt to Claude CLI) */
-  selectedModel: "sonnet" | "opus" | "haiku" | "opusplan";
-  setSelectedModel: (model: "sonnet" | "opus" | "haiku" | "opusplan") => void;
+selectedModel:
+    | "sonnet"
+    | "opus"
+    | "haiku"
+    | "opusplan"
+    | "qwen-coder-local"
+    | "qwen-chat-local"
+    | "qwen-deep-local";
+setSelectedModel: (
+    model:
+      | "sonnet"
+      | "opus"
+      | "haiku"
+      | "opusplan"
+      | "qwen-coder-local"
+      | "qwen-chat-local"
+      | "qwen-deep-local",
+  ) => void;
 
   /** Effort level for Opus 4.6 adaptive reasoning */
   effortLevel: "low" | "medium" | "high";

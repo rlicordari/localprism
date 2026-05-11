@@ -150,17 +150,11 @@ export function EditorToolbar({
         >
           <ItalicIcon className="size-4" />
         </TooltipIconButton>
-        <TooltipIconButton
-          tooltip="Code"
-          onClick={() => insertText("`", "`")}
-        >
+        <TooltipIconButton tooltip="Code" onClick={() => insertText("`", "`")}>
           <CodeIcon className="size-4" />
         </TooltipIconButton>
         <div className="mx-2 h-4 w-px bg-border" />
-        <TooltipIconButton
-          tooltip="Heading 1"
-          onClick={() => insertText("# ")}
-        >
+        <TooltipIconButton tooltip="Heading 1" onClick={() => insertText("# ")}>
           <Heading1Icon className="size-4" />
         </TooltipIconButton>
         <TooltipIconButton
@@ -169,10 +163,7 @@ export function EditorToolbar({
         >
           <Heading2Icon className="size-4" />
         </TooltipIconButton>
-        <TooltipIconButton
-          tooltip="List item"
-          onClick={() => insertText("- ")}
-        >
+        <TooltipIconButton tooltip="List item" onClick={() => insertText("- ")}>
           <ListIcon className="size-4" />
         </TooltipIconButton>
         <div data-tauri-drag-region className="flex-1 self-stretch" />
@@ -187,13 +178,21 @@ export function EditorToolbar({
         {editors.length > 1 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="size-6 p-1" title="Open in Editor">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-6 p-1"
+                title="Open in Editor"
+              >
                 <ExternalLinkIcon className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {editors.map((editor) => (
-                <DropdownMenuItem key={editor.id} onClick={() => openInEditor(editor.id)}>
+                <DropdownMenuItem
+                  key={editor.id}
+                  onClick={() => openInEditor(editor.id)}
+                >
                   {editor.name}
                 </DropdownMenuItem>
               ))}

@@ -2,6 +2,7 @@ mod claude;
 mod history;
 mod latex;
 mod skills;
+mod local_models;
 mod slash_commands;
 mod uv;
 mod zotero;
@@ -373,6 +374,9 @@ pub fn run() {
             latex::compile_latex,
             latex::synctex_edit,
             latex::detect_texlive,
+            local_models::get_local_models_config,
+            local_models::set_local_models_config,
+            local_models::validate_ollama_model,	            
             claude::check_claude_status,
             claude::install_claude_cli,
             claude::login_claude,

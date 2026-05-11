@@ -12,7 +12,9 @@ import {
 
 // ── DOCX → Markdown ──────────────────────────────────────────────────────────
 
-export async function readDocxAsMarkdown(absolutePath: string): Promise<string> {
+export async function readDocxAsMarkdown(
+  absolutePath: string,
+): Promise<string> {
   const bytes = await readFile(absolutePath);
   const result = await mammoth.convertToHtml({
     arrayBuffer: bytes.buffer as ArrayBuffer,
@@ -21,38 +23,55 @@ export async function readDocxAsMarkdown(absolutePath: string): Promise<string> 
 }
 
 function htmlToMarkdown(html: string): string {
-  return html
-    // Headings
-    .replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, (_, c) => `# ${stripTags(c)}\n\n`)
-    .replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, (_, c) => `## ${stripTags(c)}\n\n`)
-    .replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, (_, c) => `### ${stripTags(c)}\n\n`)
-    .replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, (_, c) => `#### ${stripTags(c)}\n\n`)
-    // Bold and italic
-    .replace(/<strong[^>]*>([\s\S]*?)<\/strong>/gi, (_, c) => `**${stripTags(c)}**`)
-    .replace(/<b[^>]*>([\s\S]*?)<\/b>/gi, (_, c) => `**${stripTags(c)}**`)
-    .replace(/<em[^>]*>([\s\S]*?)<\/em>/gi, (_, c) => `*${stripTags(c)}*`)
-    .replace(/<i[^>]*>([\s\S]*?)<\/i>/gi, (_, c) => `*${stripTags(c)}*`)
-    // Code
-    .replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, (_, c) => `\`${stripTags(c)}\``)
-    // List items
-    .replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (_, c) => `- ${stripTags(c)}\n`)
-    .replace(/<\/?[ou]l[^>]*>/gi, "\n")
-    // Paragraphs and line breaks
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p>/gi, "\n\n")
-    .replace(/<p[^>]*>/gi, "")
-    // Remove remaining tags
-    .replace(/<[^>]+>/g, "")
-    // Decode HTML entities
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, " ")
-    // Normalise whitespace
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  return (
+    html
+      // Headings
+      .replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, (_, c) => `# ${stripTags(c)}\n\n`)
+      .replace(
+        /<h2[^>]*>([\s\S]*?)<\/h2>/gi,
+        (_, c) => `## ${stripTags(c)}\n\n`,
+      )
+      .replace(
+        /<h3[^>]*>([\s\S]*?)<\/h3>/gi,
+        (_, c) => `### ${stripTags(c)}\n\n`,
+      )
+      .replace(
+        /<h4[^>]*>([\s\S]*?)<\/h4>/gi,
+        (_, c) => `#### ${stripTags(c)}\n\n`,
+      )
+      // Bold and italic
+      .replace(
+        /<strong[^>]*>([\s\S]*?)<\/strong>/gi,
+        (_, c) => `**${stripTags(c)}**`,
+      )
+      .replace(/<b[^>]*>([\s\S]*?)<\/b>/gi, (_, c) => `**${stripTags(c)}**`)
+      .replace(/<em[^>]*>([\s\S]*?)<\/em>/gi, (_, c) => `*${stripTags(c)}*`)
+      .replace(/<i[^>]*>([\s\S]*?)<\/i>/gi, (_, c) => `*${stripTags(c)}*`)
+      // Code
+      .replace(
+        /<code[^>]*>([\s\S]*?)<\/code>/gi,
+        (_, c) => `\`${stripTags(c)}\``,
+      )
+      // List items
+      .replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (_, c) => `- ${stripTags(c)}\n`)
+      .replace(/<\/?[ou]l[^>]*>/gi, "\n")
+      // Paragraphs and line breaks
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<p[^>]*>/gi, "")
+      // Remove remaining tags
+      .replace(/<[^>]+>/g, "")
+      // Decode HTML entities
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, " ")
+      // Normalise whitespace
+      .replace(/\n{3,}/g, "\n\n")
+      .trim()
+  );
 }
 
 function stripTags(html: string): string {
@@ -132,19 +151,31 @@ function buildDocument(markdown: string): Document {
 
     if (t.startsWith("#### ")) {
       paragraphs.push(
-        new Paragraph({ heading: HeadingLevel.HEADING_4, children: toRuns(t.slice(5)) }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_4,
+          children: toRuns(t.slice(5)),
+        }),
       );
     } else if (t.startsWith("### ")) {
       paragraphs.push(
-        new Paragraph({ heading: HeadingLevel.HEADING_3, children: toRuns(t.slice(4)) }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: toRuns(t.slice(4)),
+        }),
       );
     } else if (t.startsWith("## ")) {
       paragraphs.push(
-        new Paragraph({ heading: HeadingLevel.HEADING_2, children: toRuns(t.slice(3)) }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_2,
+          children: toRuns(t.slice(3)),
+        }),
       );
     } else if (t.startsWith("# ")) {
       paragraphs.push(
-        new Paragraph({ heading: HeadingLevel.HEADING_1, children: toRuns(t.slice(2)) }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_1,
+          children: toRuns(t.slice(2)),
+        }),
       );
     } else if (/^[-*+] /.test(t)) {
       paragraphs.push(
