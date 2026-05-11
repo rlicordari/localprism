@@ -28,7 +28,7 @@ Fork of ClaudePrism (delibae/claude-prism) with local Ollama models support.
 - Tectonic dependency removed from `Cargo.toml` (incompatible with current Rust toolchain)
 - `latex.rs` replaced with stub keeping public API surface (functions return `DISABLED_MSG`)
   - Original saved at `apps/desktop/src-tauri/src/latex.rs.original.bak`
-- App now compiles and runs with `pnpm --filter=@claude-prism/desktop tauri dev`
+- App now compiles and runs with `pnpm --filter=@localprism/desktop tauri dev`
 
 ### Frontend: model selector extended
 - File: `apps/desktop/src/stores/claude-chat-store.ts`
@@ -108,7 +108,7 @@ Complex Word styles, images, and headers/footers are standardised (not preserved
 
 # Run dev server
 cd ~/Projects/localprism
-pnpm --filter=@claude-prism/desktop tauri dev
+pnpm --filter=@localprism/desktop tauri dev
 
 # Verify backend compiles
 cd ~/Projects/localprism/apps/desktop/src-tauri

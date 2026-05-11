@@ -1,11 +1,11 @@
 [package]
-name = "claude-prism-desktop"
+name = "localprism-desktop"
 version = "1.1.6"
-description = "AI-powered LaTeX writing workspace"
+description = "Local-first AI writing workspace with Ollama and DOCX support"
 edition = "2021"
 
 [lib]
-name = "claude_prism_desktop_lib"
+name = "localprism_desktop_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

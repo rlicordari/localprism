@@ -3204,6 +3204,485 @@ Summarize the key findings and their significance. State the main contributions 
 \\end{document}
 `,
   },
+
+  // ─── IMRAD templates ───
+  {
+    id: "imrad-general",
+    name: "IMRAD Research Article",
+    description: "Standard scientific article: Introduction, Methods, Results, Discussion",
+    category: "academic",
+    subcategory: "papers",
+    tags: ["imrad", "research", "science", "journal", "methods", "results", "discussion", "empirical"],
+    icon: "FlaskConical",
+    documentClass: "article",
+    mainFileName: "main.tex",
+    accentColor: "#10b981",
+    hasBibliography: true,
+    aspectRatio: "3/4",
+    packages: [
+      { name: "amsmath", description: "Mathematical typesetting" },
+      { name: "graphicx", description: "Figure support" },
+      { name: "geometry", description: "Page layout" },
+      { name: "hyperref", description: "Hyperlinks and PDF metadata" },
+      { name: "booktabs", description: "Professional tables" },
+      { name: "natbib", description: "Bibliography (author-year)" },
+      { name: "lineno", description: "Line numbers for review" },
+      { name: "setspace", description: "Double spacing for review" },
+    ],
+    content: `\\documentclass[12pt]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{amsmath,amssymb}
+\\usepackage{graphicx}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{hyperref}
+\\usepackage{booktabs}
+\\usepackage[numbers,sort&compress]{natbib}
+\\usepackage{microtype}
+\\usepackage{caption}
+\\usepackage{subcaption}
+\\usepackage{float}
+\\usepackage{enumitem}
+\\usepackage[running]{lineno}
+\\usepackage{setspace}
+\\doublespacing
+
+\\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!50!black,
+  urlcolor=blue!80!black,
+  pdftitle={Article Title},
+  pdfauthor={Author Name}
+}
+
+\\title{\\textbf{Title of the Study: A Descriptive Subtitle that Specifies Design and Population}}
+
+\\author{
+  First Author\\textsuperscript{1,*},
+  Second Author\\textsuperscript{2},
+  Third Author\\textsuperscript{1}\\\\[6pt]
+  \\textsuperscript{1}Department, University, City, Country\\\\
+  \\textsuperscript{2}Institute, Organization, City, Country\\\\[4pt]
+  \\textsuperscript{*}Corresponding author: email@institution.edu
+}
+
+\\date{\\today}
+
+\\begin{document}
+
+\\maketitle
+\\linenumbers
+
+% ─── Abstract ────────────────────────────────────────────────────────────────
+\\begin{abstract}
+\\noindent\\textbf{Background:} Brief statement of the problem and rationale for the study.
+
+\\noindent\\textbf{Objective:} State the primary aim or hypothesis of the study.
+
+\\noindent\\textbf{Methods:} Describe the study design, participants, interventions or exposures, and primary outcome measures in two to three sentences.
+
+\\noindent\\textbf{Results:} Summarize the main findings with key statistics (e.g., effect sizes, confidence intervals, $p$-values). Include sample sizes and follow-up periods where relevant.
+
+\\noindent\\textbf{Conclusions:} Interpret the results and state the main implication for practice or policy. Mention limitations if space allows.
+
+\\smallskip
+\\noindent\\textbf{Keywords:} keyword one; keyword two; keyword three; keyword four; keyword five
+\\end{abstract}
+
+\\newpage
+
+% ─── Introduction ────────────────────────────────────────────────────────────
+\\section{Introduction}
+
+\\subsection{Background and rationale}
+Describe the scientific and clinical background. Explain why the problem is important. Cite the key literature~\\citep{ref1, ref2}.
+
+\\subsection{Knowledge gap}
+Identify what is unknown or uncertain. Explain how this study addresses the gap.
+
+\\subsection{Objectives}
+State the primary and secondary objectives. If applicable, state the hypothesis.
+
+\\begin{itemize}[noitemsep]
+  \\item Primary objective: [state primary aim]
+  \\item Secondary objectives: [list secondary aims]
+\\end{itemize}
+
+% ─── Methods ─────────────────────────────────────────────────────────────────
+\\section{Methods}
+
+\\subsection{Study design}
+Specify the study design (e.g., randomized controlled trial, prospective cohort, cross-sectional survey). State the time period and setting.
+
+\\subsection{Participants}
+Describe eligibility criteria (inclusion and exclusion). State how, where, and when participants were recruited or selected.
+
+\\subsection{Variables}
+Define the primary outcome, secondary outcomes, and key explanatory variables. Describe how each was measured or defined.
+
+\\subsection{Data sources and measurement}
+Describe instruments, questionnaires, or assays used. Report validity and reliability evidence if available.
+
+\\subsection{Statistical methods}
+
+Describe all statistical methods, including those used to control for confounding.
+
+\\begin{itemize}[noitemsep]
+  \\item Descriptive statistics: means $\\pm$ SD for continuous variables; frequencies and percentages for categorical variables.
+  \\item Comparisons: [specify test, e.g., Student's $t$-test, Mann--Whitney $U$, $\\chi^2$].
+  \\item Effect size: [specify measure, e.g., Cohen's $d$, odds ratio, hazard ratio] with 95\\% confidence intervals.
+  \\item Significance threshold: $\\alpha = 0.05$ (two-tailed).
+  \\item Software: analyses were performed using [software, version].
+\\end{itemize}
+
+\\subsection{Ethical approval}
+This study was approved by [Ethics Committee name] (protocol no.~[X]). Written informed consent was obtained from all participants (or waived because~[reason]).
+
+% ─── Results ─────────────────────────────────────────────────────────────────
+\\section{Results}
+
+\\subsection{Participant characteristics}
+Describe the flow of participants (screened, enrolled, completed). Present baseline characteristics (Table~\\ref{tab:baseline}).
+
+\\begin{table}[H]
+  \\centering
+  \\caption{Baseline characteristics of study participants}
+  \\label{tab:baseline}
+  \\begin{tabular}{lcc}
+    \\toprule
+    Characteristic & Group A ($n = $) & Group B ($n = $) \\\\
+    \\midrule
+    Age, years (mean $\\pm$ SD) & & \\\\
+    Female sex, $n$ (\\%) & & \\\\
+    [Variable], mean $\\pm$ SD & & \\\\
+    \\bottomrule
+  \\end{tabular}
+\\end{table}
+
+\\subsection{Primary outcome}
+Report the primary outcome with the measure of effect and confidence interval. For example: the intervention group showed a $X$\\% reduction in [outcome] compared to controls (OR~$= X.X$, 95\\%~CI $X.X$--$X.X$, $p = X.XX$).
+
+\\subsection{Secondary outcomes}
+Report secondary outcomes. Use figures where appropriate (Figure~\\ref{fig:results}).
+
+\\begin{figure}[H]
+  \\centering
+  % \\includegraphics[width=0.75\\textwidth]{figures/results.pdf}
+  \\fbox{\\parbox{0.75\\textwidth}{\\centering\\vspace{2cm}Figure placeholder\\vspace{2cm}}}
+  \\caption{Caption describing the figure. Data are presented as mean $\\pm$ SEM.}
+  \\label{fig:results}
+\\end{figure}
+
+% ─── Discussion ──────────────────────────────────────────────────────────────
+\\section{Discussion}
+
+\\subsection{Summary of findings}
+Briefly restate the main findings without repeating numbers from the Results section. Interpret the findings in light of the objectives stated in the Introduction.
+
+\\subsection{Comparison with existing literature}
+Compare the results with previous studies~\\citep{ref3}. Explain similarities or discrepancies.
+
+\\subsection{Mechanisms and explanations}
+Propose plausible mechanisms or explanations for the observed findings. Acknowledge uncertainty where appropriate.
+
+\\subsection{Limitations}
+\\begin{itemize}[noitemsep]
+  \\item [Limitation 1 and mitigation strategy]
+  \\item [Limitation 2 and mitigation strategy]
+  \\item [Limitation 3 and mitigation strategy]
+\\end{itemize}
+
+\\subsection{Implications}
+State the implications for research, practice, or policy. Avoid overclaiming.
+
+% ─── Conclusions ─────────────────────────────────────────────────────────────
+\\section{Conclusions}
+
+State the main conclusion in one or two sentences. Specify what the findings add to existing knowledge and what the next steps should be.
+
+% ─── Declarations ────────────────────────────────────────────────────────────
+\\section*{Declarations}
+
+\\subsection*{Funding}
+This work was supported by [funding agency] (grant no.~[X]). The funder had no role in study design, data collection, analysis, interpretation, or writing.
+
+\\subsection*{Conflicts of interest}
+The authors declare no conflicts of interest.
+
+\\subsection*{Data availability}
+Data supporting the findings of this study are available [at DOI~/ upon reasonable request from the corresponding author].
+
+\\subsection*{Author contributions}
+[First Author]: conceptualization, methodology, formal analysis, writing -- original draft.
+[Second Author]: data collection, visualization, writing -- review \\& editing.
+[Third Author]: supervision, funding acquisition, writing -- review \\& editing.
+
+% ─── References ──────────────────────────────────────────────────────────────
+\\bibliographystyle{unsrtnat}
+\\bibliography{references}
+
+\\end{document}
+`,
+  },
+  {
+    id: "imrad-clinical",
+    name: "Clinical Trial Report",
+    description: "CONSORT-aligned template for randomized controlled trials",
+    category: "academic",
+    subcategory: "papers",
+    tags: ["imrad", "clinical", "rct", "trial", "consort", "medicine", "randomized", "intervention"],
+    icon: "FlaskConical",
+    documentClass: "article",
+    mainFileName: "main.tex",
+    accentColor: "#f59e0b",
+    hasBibliography: true,
+    aspectRatio: "3/4",
+    packages: [
+      { name: "amsmath", description: "Mathematical typesetting" },
+      { name: "graphicx", description: "Figure support" },
+      { name: "geometry", description: "Page layout" },
+      { name: "hyperref", description: "Hyperlinks and PDF metadata" },
+      { name: "booktabs", description: "Professional tables" },
+      { name: "natbib", description: "Bibliography (numbered)" },
+      { name: "lineno", description: "Line numbers for review" },
+      { name: "setspace", description: "Double spacing for review" },
+      { name: "array", description: "Enhanced table column types" },
+    ],
+    content: `\\documentclass[12pt]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{amsmath}
+\\usepackage{graphicx}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{hyperref}
+\\usepackage{booktabs}
+\\usepackage{array}
+\\usepackage[numbers,sort&compress]{natbib}
+\\usepackage{microtype}
+\\usepackage{caption}
+\\usepackage{float}
+\\usepackage{enumitem}
+\\usepackage[running]{lineno}
+\\usepackage{setspace}
+\\doublespacing
+
+\\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!50!black,
+  urlcolor=blue!80!black,
+  pdftitle={Trial Report},
+  pdfauthor={Author Name}
+}
+
+\\title{\\textbf{[Intervention] versus [Comparator] for [Condition] in [Population]:\\\\
+A Randomized Controlled Trial}}
+
+\\author{
+  First Author\\textsuperscript{1,*},
+  Second Author\\textsuperscript{2},
+  Third Author\\textsuperscript{1}\\\\[6pt]
+  \\textsuperscript{1}Department, University, City, Country\\\\
+  \\textsuperscript{2}Institute, Organization, City, Country\\\\[4pt]
+  \\textsuperscript{*}Corresponding author: email@institution.edu\\\\[4pt]
+  \\small Trial registration: [registry] No.\\ [identifier]. Registered [date].
+}
+
+\\date{\\today}
+
+\\begin{document}
+
+\\maketitle
+\\linenumbers
+
+% ─── Abstract (structured) ───────────────────────────────────────────────────
+\\begin{abstract}
+\\noindent\\textbf{Background:} Describe the scientific background and rationale for the trial.
+
+\\noindent\\textbf{Methods:} State trial design, participants (eligibility criteria, setting), interventions, and primary outcome. Report allocation ratio and blinding.
+
+\\noindent\\textbf{Results:} Give number randomized and analyzed. Report effect estimate (e.g., relative risk, mean difference) with 95\\% CI and $p$-value for the primary outcome. Include harms summary.
+
+\\noindent\\textbf{Conclusions:} Interpretation consistent with results, limitations, and generalizability.
+
+\\smallskip
+\\noindent\\textbf{Trial registration:} [Registry] No.\\ [identifier].\\\\
+\\noindent\\textbf{Funding:} [Source].
+\\end{abstract}
+
+\\newpage
+
+% ─── Introduction ────────────────────────────────────────────────────────────
+\\section{Introduction}
+
+\\subsection{Scientific background}
+Summarize what is known about the condition and existing treatments. Cite systematic reviews and key trials~\\citep{ref1}.
+
+\\subsection{Rationale}
+Explain the scientific and clinical rationale for testing this intervention. State the clinical uncertainty (equipoise).
+
+\\subsection{Objectives and hypotheses}
+\\begin{itemize}[noitemsep]
+  \\item Primary objective: To determine whether [intervention] reduces/improves [primary outcome] compared to [comparator] in [population].
+  \\item Secondary objectives: [list].
+  \\item Primary hypothesis: [Intervention] will result in a [X]\\% reduction in [outcome] (HR~$= X.X$, one-sided $\\alpha = 0.025$).
+\\end{itemize}
+
+% ─── Methods ─────────────────────────────────────────────────────────────────
+\\section{Methods}
+
+\\subsection{Trial design}
+This was a [parallel-group / crossover / factorial], [single-/double-/triple-blind], randomized controlled trial conducted at [number] centres in [country]. The study was conducted between [dates]. The protocol was published~\\citep{protocol} and approved by [ethics committee] (ref.~no.\\ [X]).
+
+\\subsection{Participants}
+
+\\textbf{Inclusion criteria:}
+\\begin{itemize}[noitemsep]
+  \\item [Criterion 1]
+  \\item [Criterion 2]
+\\end{itemize}
+
+\\textbf{Exclusion criteria:}
+\\begin{itemize}[noitemsep]
+  \\item [Criterion 1]
+  \\item [Criterion 2]
+\\end{itemize}
+
+\\subsection{Interventions}
+Describe each intervention and comparator with sufficient detail to allow replication. Specify dose, route, frequency, and duration. State criteria for discontinuation.
+
+\\subsection{Outcomes}
+
+\\textbf{Primary outcome:} [Define precisely, including measurement method, timepoint, and responsible assessor].
+
+\\textbf{Secondary outcomes:}
+\\begin{itemize}[noitemsep]
+  \\item [Outcome 1]: measured at [timepoint] using [method].
+  \\item [Outcome 2]: measured at [timepoint] using [method].
+\\end{itemize}
+
+\\textbf{Safety outcomes:} Adverse events were classified according to [MedDRA / CTCAE version X].
+
+\\subsection{Sample size}
+Assuming [primary event rate] in the control arm and a clinically meaningful difference of [X], [N] participants per arm were needed to achieve [80/90]\\% power at a two-sided $\\alpha = 0.05$, accounting for [X]\\% loss to follow-up. Power calculations were performed using [software].
+
+\\subsection{Randomization}
+\\textbf{Sequence generation:} Participants were randomized in a [1:1] ratio using [computer-generated / permuted-block] randomization with block sizes of [X].\\\\
+\\textbf{Allocation concealment:} Allocations were concealed using [sealed envelopes / central web-based system].\\\\
+\\textbf{Implementation:} Randomization was performed by [who] after confirming eligibility.
+
+\\subsection{Blinding}
+[Participants / care providers / outcome assessors] were blinded to treatment allocation. Blinding was maintained by [method]. Blinding was assessed at [timepoint].
+
+\\subsection{Statistical methods}
+All analyses followed a pre-specified statistical analysis plan. The primary analysis was intention-to-treat (ITT). Per-protocol (PP) and as-treated analyses were conducted as sensitivity analyses.
+
+\\begin{itemize}[noitemsep]
+  \\item Primary outcome: [logistic regression / Cox proportional-hazards / mixed-effects model] adjusting for [covariates]. Results are presented as [OR / HR / MD] with 95\\% CI.
+  \\item Missing data: handled using [multiple imputation / complete-case analysis].
+  \\item Subgroup analyses: pre-specified for [variables]; reported with interaction $p$-values.
+  \\item Significance: $p < 0.05$ (two-tailed) for primary outcome; $p < 0.01$ for secondary outcomes.
+  \\item Software: [R version X.X / Stata version X].
+\\end{itemize}
+
+% ─── Results ─────────────────────────────────────────────────────────────────
+\\section{Results}
+
+\\subsection{Participant flow}
+[Describe screening, randomization, allocation, follow-up, and analysis in text; include CONSORT flow diagram as Figure~\\ref{fig:consort}.]
+
+\\begin{figure}[H]
+  \\centering
+  \\fbox{\\parbox{0.75\\textwidth}{\\centering\\vspace{3cm}CONSORT Flow Diagram\\vspace{3cm}}}
+  \\caption{CONSORT flow diagram showing participant disposition through the trial.}
+  \\label{fig:consort}
+\\end{figure}
+
+\\subsection{Baseline data}
+Baseline characteristics were well balanced between groups (Table~\\ref{tab:baseline}).
+
+\\begin{table}[H]
+  \\centering
+  \\caption{Baseline characteristics of randomized participants}
+  \\label{tab:baseline}
+  \\begin{tabular}{lcc}
+    \\toprule
+    Characteristic & Intervention ($n = $) & Control ($n = $) \\\\
+    \\midrule
+    Age, years (mean $\\pm$ SD) & & \\\\
+    Female sex, $n$ (\\%) & & \\\\
+    [Comorbidity], $n$ (\\%) & & \\\\
+    [Baseline measure], mean $\\pm$ SD & & \\\\
+    \\bottomrule
+  \\end{tabular}
+\\end{table}
+
+\\subsection{Primary outcome}
+[X] of [N] participants in the intervention group experienced the primary outcome, compared with [X] of [N] in the control group ([OR/HR/MD]~$= X.X$, 95\\%~CI $X.X$--$X.X$, $p = X.XX$). [Interpret briefly].
+
+\\subsection{Secondary outcomes}
+Results for secondary outcomes are presented in Table~\\ref{tab:secondary}. [Interpret key findings].
+
+\\subsection{Harms}
+Adverse events are summarized in Table~\\ref{tab:ae}. Serious adverse events occurred in [X]\\% versus [X]\\% of participants. [Specify any deaths, withdrawals due to adverse events].
+
+% ─── Discussion ──────────────────────────────────────────────────────────────
+\\section{Discussion}
+
+\\subsection{Principal findings}
+[Restate the main findings. Compare effect size and direction with a priori hypotheses.]
+
+\\subsection{Comparison with other trials}
+[Compare with key existing trials. Explain any differences in population, intervention, or outcome definition~\\citep{ref2}.]
+
+\\subsection{Mechanisms}
+[Propose biological or behavioral mechanisms for observed effects.]
+
+\\subsection{Strengths and limitations}
+\\textbf{Strengths:} [e.g., rigorous blinding, pre-registered protocol, representative sample, adequate power].
+
+\\textbf{Limitations:}
+\\begin{itemize}[noitemsep]
+  \\item [Limitation and implication for interpretation]
+  \\item [Open-label design / generalizability / loss to follow-up / etc.]
+\\end{itemize}
+
+\\subsection{Generalizability}
+[Describe to whom the results apply and any important caveats.]
+
+% ─── Conclusions ─────────────────────────────────────────────────────────────
+\\section{Conclusions}
+
+[State the main conclusion. Specify what the trial adds and recommend next steps.]
+
+% ─── Declarations ────────────────────────────────────────────────────────────
+\\section*{Declarations}
+
+\\subsection*{Ethics approval and consent}
+The trial was approved by [Ethics Committee] (ref.~[X]). Written informed consent was obtained from all participants.
+
+\\subsection*{Funding}
+[Source]. The funder had no role in design, conduct, or reporting.
+
+\\subsection*{Conflicts of interest}
+[State or declare none].
+
+\\subsection*{Data sharing}
+Individual participant data [will be / are] available [conditions and contact].
+
+\\subsection*{Author contributions}
+[Use CRediT taxonomy: Conceptualization, Methodology, Formal analysis, etc.]
+
+% ─── References ──────────────────────────────────────────────────────────────
+\\bibliographystyle{unsrtnat}
+\\bibliography{references}
+
+\\end{document}
+`,
+  },
 ];
 
 export const BIB_TEMPLATE = `% Add your references here

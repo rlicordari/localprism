@@ -174,7 +174,7 @@ interface ClaudeChatState {
   }[];
 
   /** Currently selected model (passed per-prompt to Claude CLI) */
-selectedModel:
+  selectedModel:
     | "sonnet"
     | "opus"
     | "haiku"
@@ -182,7 +182,7 @@ selectedModel:
     | "qwen-coder-local"
     | "qwen-chat-local"
     | "qwen-deep-local";
-setSelectedModel: (
+  setSelectedModel: (
     model:
       | "sonnet"
       | "opus"
@@ -240,7 +240,7 @@ export const useClaudeChatStore = create<ClaudeChatState>()((set, get) => ({
   tabs: [makeDefaultTab(DEFAULT_TAB_ID)],
   activeTabId: DEFAULT_TAB_ID,
 
-  selectedModel: "opus",
+  selectedModel: "qwen-coder-local",
   setSelectedModel: (model) => set({ selectedModel: model }),
 
   effortLevel: "medium",

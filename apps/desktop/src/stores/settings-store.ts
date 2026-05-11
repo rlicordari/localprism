@@ -15,7 +15,7 @@ export const useSettingsStore = create<SettingsState>()(
       setCompilerBackend: (backend) => set({ compilerBackend: backend }),
     }),
     {
-      name: "claude-prism-settings",
+      name: "localprism-settings",
     },
   ),
 );

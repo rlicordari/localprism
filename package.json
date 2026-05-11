@@ -1,10 +1,10 @@
 {
-  "name": "@claude-prism/root",
-  "description": "Open-Source AI LaTeX writing workspace",
+  "name": "@localprism/root",
+  "description": "Local-first AI writing workspace with Ollama and DOCX support",
   "version": "1.1.6",
   "repository": {
     "type": "git",
-    "url": "https://github.com/delibae/claude-prism"
+    "url": "https://github.com/rlicordari/localprism"
   },
   "private": true,
   "workspaces": [
@@ -12,9 +12,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:web": "pnpm turbo dev --filter=@claude-prism/web --filter=@claude-prism/latex-api",
-    "dev:desktop": "pnpm --filter=@claude-prism/desktop-sidecar dev & pnpm --filter=@claude-prism/desktop tauri dev",
-    "build:desktop": "pnpm --filter=@claude-prism/desktop tauri build",
+    "dev:web": "pnpm turbo dev --filter=@localprism/web --filter=@localprism/latex-api",
+    "dev:desktop": "pnpm --filter=@localprism/desktop-sidecar dev & pnpm --filter=@localprism/desktop tauri dev",
+    "build:desktop": "pnpm --filter=@localprism/desktop tauri build",
     "lint": "pnpm exec biome check",
     "lint:fix": "pnpm exec biome check --fix",
     "release": "echo 'To release: git tag v<version> && git push origin v<version>'",
